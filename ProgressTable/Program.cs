@@ -19,16 +19,16 @@ namespace ProgressTable
                 tempGlobalProgress.GlobalProgressTable[i] = WriteData(Table.FileReadTable("test"));
             }
 
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(GlobalProgress[]));
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(GlobalProgress));
 
-            using (FileStream fs = new FileStream("people.json", FileMode.OpenOrCreate))                // сохранение файла json
+            using (FileStream fs = new FileStream("tableprogres.json", FileMode.OpenOrCreate))                // сохранение файла json
             {
                 jsonFormatter.WriteObject(fs, tempGlobalProgress);
             }
 
-            using (FileStream fs = new FileStream("people.json", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("tableproges.json", FileMode.OpenOrCreate))
             {
-                GlobalProgress[] temp = (GlobalProgress[])jsonFormatter.ReadObject(fs);
+                GlobalProgress temp = (GlobalProgress)jsonFormatter.ReadObject(fs);
 
                 //foreach (GlobalProgress p in temp)
                 //{

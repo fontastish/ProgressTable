@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProgressTable
 {
+    [DataContract]
     public class Table
     {
+        [DataMember]
         public int[][] Progress { get; set; }
 
         public Table(int [][] progress)
