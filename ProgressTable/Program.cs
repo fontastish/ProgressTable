@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,9 +19,26 @@ namespace ProgressTable
                 tempGlobalProgress.GlobalProgressTable[i] = WriteData(Table.FileReadTable("test"));
             }
 
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(GlobalProgress[]));
+
+            using (FileStream fs = new FileStream("people.json", FileMode.OpenOrCreate))                // сохранение файла json
+            {
+                jsonFormatter.WriteObject(fs, tempGlobalProgress);
+            }
+
+            using (FileStream fs = new FileStream("people.json", FileMode.OpenOrCreate))
+            {
+                GlobalProgress[] temp = (GlobalProgress[])jsonFormatter.ReadObject(fs);
+
+                //foreach (GlobalProgress p in temp)
+                //{
+                //    Console.WriteLine("Имя: {0} --- Возраст: {1}", p.Name, p.Age);
+                //}
+            }
+
             Console.WriteLine(tempGlobalProgress.ToStringByName(new FullName("Asya", "Cat")));
             Console.WriteLine(tempGlobalProgress.ToStringStudents());
-            Console.WriteLine('\u2713');
+            Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(0));
 
             Console.WriteLine(tempGlobalProgress.ToString(10));
             Console.ReadKey();      
