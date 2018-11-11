@@ -49,6 +49,7 @@
     <Compile Include="Student\Student.cs" />
     <Compile Include="Table\GlobalProgress.cs" />
     <Compile Include="Table\Table.cs" />
+    <Compile Include="Teacher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

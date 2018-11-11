@@ -28,8 +28,8 @@ namespace ProgressTable
 
         public override bool Equals(object obj)
         {
-            if (FirstName == ((FullName)obj).FirstName)
-                if (SecondName == ((FullName) obj).SecondName)
+            if (FirstName == ((FullName)obj)?.FirstName)
+                if (SecondName == ((FullName) obj)?.SecondName)
                     return true;
             return false;
         }

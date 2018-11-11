@@ -18,9 +18,9 @@ namespace ProgressTable
 
         public GlobalProgress(string table, string student)
         {
-            Students = Student.FileReadStudents(student);
+            Students = Teacher.ReadFileStudents(student);
             GlobalProgressTable = new Table[Students.Length];
-            var temp = Table.FileReadTable(table);
+            var temp = Teacher.ReadFileTable(table);
             for (int i = 0; i < GlobalProgressTable.Length; i++)
             {
                 GlobalProgressTable[i] = temp;
@@ -28,35 +28,35 @@ namespace ProgressTable
 
         }
 
-        //public string ToStringProgressForStudent(int i)
-        //{
-        //    var strout = string.Empty;
-        //    strout = GlobalProgressTable[i].ToString();
-        //    return strout.Replace('2', '#').Replace('3', '#').Replace('4', '#').Replace('5', '#');
-        //}
-
         public string ToStringProgressForStudent(int i)
         {
-            var strout = Students[i].Name + " passed" + "\n";
-
-            for (int k = 0; k < GlobalProgressTable[i].Progress.Length; k++)
+            var ProgressStudent = string.Empty;
+            try
             {
-                bool check = true;
-                for (int l = 0; l < GlobalProgressTable[i].Progress[k].Length; l++)
+                ProgressStudent = Students[i].Name + " passed" + "\n";
+                for (int k = 0; k < GlobalProgressTable[i].Progress.Length; k++)
                 {
-                    if (GlobalProgressTable[i].Progress[k][l] < 2)
+                    bool check = true;
+                    for (int l = 0; l < GlobalProgressTable[i].Progress[k].Length; l++)
                     {
-                        check = false;
-                        break;
+                        if (GlobalProgressTable[i].Progress[k][l] < 2)
+                        {
+                            check = false;
+                            break;
+                        }
                     }
+
+                    if (check)
+                        ProgressStudent += k + " lab" + "\n";
+
                 }
-
-                if (check)
-                    strout += k + " lab" + "\n";
-
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
-            return strout;
+            return ProgressStudent;
         }
 
         public string ToStringStudents()

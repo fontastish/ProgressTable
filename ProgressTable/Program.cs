@@ -13,54 +13,34 @@ namespace ProgressTable
     {
         static void Main(string[] args)
         {
-            GlobalProgress tempGlobalProgress = new GlobalProgress("test", "stud");
-            for (int i = 0; i < tempGlobalProgress.Students.Length; i++)
-            {
-                tempGlobalProgress.GlobalProgressTable[i] = WriteData(Table.FileReadTable("test"));
-            }
+            
+            DataContractJsonSerializer
+                jsonFormatter =
+                    new DataContractJsonSerializer(typeof(GlobalProgress)); // создания класса для серелизации
+            GlobalProgress tempGlobalProgress;
+            if (System.IO.File.Exists("GlobalProgress.json"))
+                using (FileStream fs = new FileStream("GlobalProgress.json", FileMode.Open)) // если файл уже создан, то читаем     
+                    tempGlobalProgress = (GlobalProgress) jsonFormatter.ReadObject(fs);
+            else
+                tempGlobalProgress = new GlobalProgress("test", "stud");
+                for (int i = 0; i < tempGlobalProgress.Students.Length; i++)
+                    tempGlobalProgress.GlobalProgressTable[i] = WriteData(Teacher.ReadFileTable("test"));
 
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(GlobalProgress));
-
-            using (FileStream fs = new FileStream("tableprogres.json", FileMode.OpenOrCreate))                // сохранение файла json
-            {
-                jsonFormatter.WriteObject(fs, tempGlobalProgress);
-            }
-
-            using (FileStream fs = new FileStream("tableproges.json", FileMode.OpenOrCreate))
-            {
-                GlobalProgress temp = (GlobalProgress)jsonFormatter.ReadObject(fs);
-
-                //foreach (GlobalProgress p in temp)
-                //{
-                //    Console.WriteLine("Имя: {0} --- Возраст: {1}", p.Name, p.Age);
-                //}
-            }
-
+            Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(1));
             Console.WriteLine(tempGlobalProgress.ToStringByName(new FullName("Asya", "Cat")));
             Console.WriteLine(tempGlobalProgress.ToStringStudents());
             Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(0));
-
             Console.WriteLine(tempGlobalProgress.ToString(10));
-            Console.ReadKey();      
-        }
 
-        //static void WriteData(GlobalProgress temp)
-        //{
-        //    Random random = new Random();
-        //    for (int i = 0; i < temp.GlobalProgressTable.Length; i++)
-        //    {
-        //        for (int j = 0; j < temp.GlobalProgressTable[i].Progress.Length; j++)
-        //        {
-        //            for (int k = 0; k < temp.GlobalProgressTable[i].Progress[j].Length; k++)
-        //            {
-        //                Console.WriteLine("Input mark for task {0} in {1} lab", j, i);
-        //                //tempTable.EditData(i, j, int.Parse(Console.ReadLine()));
-        //                temp.GlobalProgressTable[i].Progress[j][k].
-        //                //(i, j, random.Next(0, 10));
-        //            }
-        //        }
-        //    }
-        //}
+
+            using (FileStream fs = new FileStream("GlobalProgress.json", FileMode.OpenOrCreate))
+                jsonFormatter.WriteObject(fs, tempGlobalProgress);
+
+
+
+
+            Console.ReadKey();
+        }
 
         static Table WriteData(Table tempTask)
         {
