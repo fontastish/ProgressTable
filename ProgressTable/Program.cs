@@ -13,31 +13,34 @@ namespace ProgressTable
     {
         static void Main(string[] args)
         {
-            
+            string line = "============================";
+
             DataContractJsonSerializer
                 jsonFormatter =
-                    new DataContractJsonSerializer(typeof(GlobalProgress)); // создани€ класса дл€ серелизации
+                    new DataContractJsonSerializer(typeof(GlobalProgress)); // создани€ класса дл€ сериализации
+
             GlobalProgress tempGlobalProgress;
+
             if (System.IO.File.Exists("GlobalProgress.json"))
                 using (FileStream fs = new FileStream("GlobalProgress.json", FileMode.Open)) // если файл уже создан, то читаем     
                     tempGlobalProgress = (GlobalProgress) jsonFormatter.ReadObject(fs);
             else
-                tempGlobalProgress = new GlobalProgress("test", "stud");
+            {
+                tempGlobalProgress = new GlobalProgress("test", "stud"); // иначе создаЄм 
                 for (int i = 0; i < tempGlobalProgress.Students.Length; i++)
                     tempGlobalProgress.GlobalProgressTable[i] = WriteData(Teacher.ReadFileTable("test"));
 
-            Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(1));
-            Console.WriteLine(tempGlobalProgress.ToStringByName(new FullName("Asya", "Cat")));
-            Console.WriteLine(tempGlobalProgress.ToStringStudents());
-            Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(0));
-            Console.WriteLine(tempGlobalProgress.ToString(10));
+            }
 
-
-            using (FileStream fs = new FileStream("GlobalProgress.json", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("GlobalProgress.json", FileMode.OpenOrCreate))   // записываем файл сериализации
                 jsonFormatter.WriteObject(fs, tempGlobalProgress);
 
 
-
+            Console.WriteLine(tempGlobalProgress.ToStringStudents());
+            Console.WriteLine(line);
+            Console.WriteLine(tempGlobalProgress.ToStringProgressForStudent(1));
+            Console.WriteLine(line);
+            Console.WriteLine(tempGlobalProgress.ToString(2));
 
             Console.ReadKey();
         }

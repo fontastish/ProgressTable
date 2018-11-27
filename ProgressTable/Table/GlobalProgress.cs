@@ -30,10 +30,11 @@ namespace ProgressTable
 
         public string ToStringProgressForStudent(int i)
         {
-            var ProgressStudent = string.Empty;
+            //var ProgressStudent = string.Empty;
+            StringBuilder ProgressStudent = new StringBuilder();
             try
             {
-                ProgressStudent = Students[i].Name + " passed" + "\n";
+                ProgressStudent.Append(Students[i].Name + " passed");
                 for (int k = 0; k < GlobalProgressTable[i].Progress.Length; k++)
                 {
                     bool check = true;
@@ -47,7 +48,7 @@ namespace ProgressTable
                     }
 
                     if (check)
-                        ProgressStudent += k + " lab" + "\n";
+                        ProgressStudent.Append('\n' + k + " lab");
 
                 }
             }
@@ -56,18 +57,20 @@ namespace ProgressTable
                 Console.WriteLine(ex.Message);
             }
 
-            return ProgressStudent;
+            if (ProgressStudent.ToString().EndsWith("passed"))
+                ProgressStudent.Append(" nothing");
+            return ProgressStudent.ToString();
         }
 
         public string ToStringStudents()
         {
-            var strout = string.Empty;
+            StringBuilder strout = new StringBuilder();
             for (int i = 0; i < Students.Length; i++)
             {
-                strout += Students[i].ToString() + "\n";
+                strout.Append(Students[i].ToString() + "\n");
             }
-
-            return strout;
+            strout.Remove(strout.Length - 2, 2);
+            return strout.ToString();
         }
 
         public string ToStringByName(FullName name)
@@ -83,17 +86,17 @@ namespace ProgressTable
 
         public string ToString(int i)
         {
-            var strout = string.Empty;
+            StringBuilder strout = new StringBuilder();
             try
             {
-               strout =  Students[i].ToString() + "\n" + GlobalProgressTable[i].ToString();
+               strout.Append(Students[i].ToString() + "\n" + GlobalProgressTable[i].ToString());
             }
             catch (IndexOutOfRangeException ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            return strout;
+            return strout.ToString();
 
         }
 

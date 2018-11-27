@@ -25,20 +25,21 @@ namespace ProgressTable
         }
 
         public override string ToString()
-         {
-            var strout = string.Empty;
+        {
+            StringBuilder strout = new StringBuilder();
             for (int i = 0; i < Progress.Length; i++)
             {
-                strout += "Lab " + i + "\n\t";
+                strout.Append("-----------\n");
+                strout.Append("Lab " + (i+1).ToString() + "\n\t");
                 for (int j = 0; j < Progress[i].Length; j++)
                 {
-                    strout += Progress[i][j] + " ";
+                    strout.Append(Progress[i][j] + " ");
                 }
 
-                strout += "\n";
+                strout.Append("\n");
             }
 
-            return strout;
+            return strout.Remove(strout.Length-2,2).ToString();
         }
     }
 }
